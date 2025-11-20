@@ -101,10 +101,8 @@ install_data(
     rename: 'howdy',
 )
 
-fs = import('fs')
-if not fs.exists(config_path)
-    install_data('config.ini', install_dir: confdir, install_mode: 'rwxr--r--', install_tag: 'config')
-endif
+# Install config.ini only if it doesn't exist (preserve user configuration)
+meson.add_install_script('install-config.sh', get_option('sysconfdir') / 'howdy', meson.current_source_dir() / 'config.ini')
 
 install_data('dlib-data/install.sh', 'dlib-data/Readme.md', install_dir: dlibdatadir, install_mode: 'rwxr--r--')
 
